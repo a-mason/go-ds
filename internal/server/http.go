@@ -3,15 +3,17 @@ package server
 import (
 	"encoding/json"
 	"net/http"
+	"github.com/a-mason/go-ds/internal/log"
 	"github.com/gorilla/mux"
+
 )
 
 type httpServer struct {
-	Log *Log
+	Log *log.Log
 }
 
 type ProduceRequest struct {
-	Record Record
+	Record log.Record
 }
 
 type ProduceResponse struct {
@@ -23,12 +25,12 @@ type ConsumeRequest struct {
 }
 
 type ConsumeResponse struct {
-	Record Record
+	Record log.Record
 }
 
 func newHttpServer() *httpServer {
 	return &httpServer{
-		Log: NewLog(),
+		Log: log.NewLog(),
 	}
 }
 
@@ -71,7 +73,7 @@ func (s *httpServer) handleConsume(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	rec, err := s.Log.Read(req.Offset)
-	if (err == ErrOffsetNotFound) {
+	if (err == log.ErrOffsetNotFound) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}

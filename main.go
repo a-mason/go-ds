@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"github.com/a-mason/go-ds/internal/server"
+	"log"
 )
 
 func main() {
